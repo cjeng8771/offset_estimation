@@ -24,12 +24,16 @@ The SHOUT measurement framework is used to automate TX and RX functions across m
 ### Run the Experiment to Collect Data
 Once the experiment has started, 
 
-### Offset Estimation
+## Offset Estimation
 The local [Jupyter Notebook](https://github.com/cjeng8771/offset_estimation/blob/main/offset_estimation_full.ipynb) or the [Google Colab]() will be used for Distributed Clock Time Offset Estimation. 
+
+### Setting up the Estimation Notebook
+Choose either the local Jupyter Notebook or a copy of the Google Colab to conduct the estimation analysis.
   * Using the Jupyter Notebook will require forking the [repository](https://github.com/cjeng8771/offset_estimation/tree/main) or downloading all files locally. Ensure that the subfolder with collected data files is inside the same folder as the Jupyter Notebook.
   * Using the Google Colab will require making a copy since the linked notebook is read only. Ensure that the subfolder with collected data files is uploaded to the Colab Notebook.
   * The data subfolder should, by default, have a name in this format: `Shout_meas_MM-DD-YYYY_HH-MM-SS` where MM-DD-YYYY is the date of collection and HH-MM-SS is the time of collection and contain the following files: `log`, `measurements.hdf5`, and `save_iq_w_tx_file.json`.
 
+### Estimation Analysis
 The offset estimation notebooks uses the SHOUT data to:
   * Plot the Power spectral density (PSD) for each link in the data set.
   * Calculate the index offset from the beginning of the received packet to the index of highest correlation with the preamble (true beginning of transmitted packet) for each link.
@@ -37,6 +41,6 @@ The offset estimation notebooks uses the SHOUT data to:
   * Use the offset values to estimate the distributed clock time offset at each SHOUT receiver used in the experiment.
   * Analyze the least square error and root mean squared error (RMSE) for each link's estimation in comparison to the true calculated offsets.
 
-Because SHOUT collects TX/RX data from each link four times, there are four repetitions/trials (referred to as `repNum` in the code) for each link to provide more context for the estimation and inference.
-
-Note: Running the Jupyter Notebook will create 8 files in its parent folder. Four files entitled `col_#.txt` and four files entitled `snr_#.txt`. These files hold the offset data and SNR data for each link, respectively, with the files numbered by `repNum`.
+### Additional Notes to Understand the Offset Estimation Results
+1. Because SHOUT collects TX/RX data from each link four times, there are four repetitions/trials (referred to as `repNum` in the code) for each link to provide more context for the estimation and inference.
+2. Running the Jupyter Notebook will create 8 files in its parent folder. Four files entitled `col_#.txt` and four files entitled `snr_#.txt`. These files hold the offset data and SNR data for each link, respectively, with the files numbered by `repNum`.

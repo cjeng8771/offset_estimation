@@ -15,11 +15,11 @@ The SHOUT measurement framework is used to automate TX and RX functions across m
 ### Reserve Resources & Instantiate an Experiment
 1. Log into [POWDER](https://powderwireless.net/).
 2. Start an experiment by opening the [pre-saved parameters](https://www.powderwireless.net/p/PowderSandbox/shout-long-measurement&rerun_paramset=78a15bc0-ad06-11ed-b318-e4434b2381fc).
-  * The profile should be shout-long-measurement. If you do not have access to the profile, one can be created via:
+    * The profile should be shout-long-measurement. If you do not have access to the profile, one can be created via:
     **`Experiments` &rarr; `Create Experiment Profile` &rarr; `Git Repo` &rarr; add [repo link](https://gitlab.flux.utah.edu/frost/proj-radio-meas) &rarr; select the profile**
-  * The parameters should include a d740 compute node, a d740 orchestrator node, dataset None, and the following CBAND X310 Radios: Behavioral, Browning, Friendship Manor, Hospital, Honors, SMT, and USTAR. It should include the frequency range: MIN 3450.0 to MAX 3460.0. The range can adjust depending on availability as long as it remains inside the allowed range. Check that `Start X11 VNC on all compute nodes` is checked.
-  * Give the project a name and select the `NRDZ` project (or appropriate project).
-  * If a warning appears that the resources are not available at this time, create a resource reservation to complete the experiment later based on resource availability. Then schedule the experiment to match the resource reservation.
+    * The parameters should include a d740 compute node, a d740 orchestrator node, dataset None, and the following CBAND X310 Radios: Behavioral, Browning, Friendship Manor, Hospital, Honors, SMT, and USTAR. It should include the frequency range: MIN 3450.0 to MAX 3460.0. The range can adjust depending on availability as long as it remains inside the allowed range. Check that `Start X11 VNC on all compute nodes` is checked.
+    * Give the project a name and select the `NRDZ` project (or appropriate project).
+    * If a warning appears that the resources are not available at this time, create a resource reservation to complete the experiment later based on resource availability. Then schedule the experiment to match the resource reservation.
 
 ### Run the Experiment to Collect Data
 Once the experiment has started, 

@@ -22,7 +22,20 @@ The SHOUT measurement framework is used to automate TX and RX functions across m
     * If a warning appears that the resources are not available at this time, create a resource reservation to complete the experiment later based on resource availability. Then schedule the experiment to match the resource reservation.
 
 ### Run the Experiment to Collect Data
-Once the experiment has started, 
+Once the experiment has started and is ready, go to the `List View` to view all node hostnames.
+
+1. Click the gear symbol on the far right of each node and select Power Cycle. This will reboot the nodes in case there were issues during set up. Wait until all nodes are ready again.
+2. Use the following commands to start ssh and tmux sessions for the orchestrator. Username refers to your POWDER username. `orch_node_hostname` refers to the hostnames listed in `List View`.
+    ```
+    ssh -Y -p 22 -t <username>@<orch_node_hostname> 'cd /local/repository/bin && tmux new-session -A -s shout1 &&  exec $SHELL'
+    ssh -Y -p 22 -t <username>@<orch_node_hostname> 'cd /local/repository/bin && tmux new-session -A -s shout2 &&  exec $SHELL'
+    ```
+3. Use the following command to start a ssh and tmux session for each of the radios. The `radio_hostname` is listed next to each node in the `List View`. If using the given parameters, there should be 9 sessions open now, including the orchestrator sessions.
+    ```
+    ssh -Y -p 22 -t <username>@<radio_hostname> 'cd /local/repository/bin && tmux new-session -A -s shout &&  exec $SHELL'
+    ```
+Note: `tmux` allows multiple remote sessions to remain active even when the SSH connection gets disconncted.
+4. 
 
 ## Offset Estimation
 The local [Jupyter Notebook](https://github.com/cjeng8771/offset_estimation/blob/main/offset_estimation_full.ipynb) or the [Google Colab]() will be used for Distributed Clock Time Offset Estimation. 

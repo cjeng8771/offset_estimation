@@ -21,7 +21,7 @@ The SHOUT measurement framework is used to automate TX and RX functions across m
     * Give the project a name and select the `NRDZ` project (or appropriate project).
     * If a warning appears that the resources are not available at this time, create a resource reservation to complete the experiment later based on resource availability. Then schedule the experiment to match the resource reservation.
 
-### Run the Experiment to Collect Data
+### Set up Sessions for all Nodes
 Once the experiment has started and is ready, go to the `List View` to view all node hostnames.
 
 1. Click the gear symbol on the far right of each node and select Power Cycle. This will reboot the nodes in case there were issues during set up. Wait until all nodes are ready again.
@@ -35,7 +35,52 @@ Once the experiment has started and is ready, go to the `List View` to view all 
     ssh -Y -p 22 -t <username>@<radio_hostname> 'cd /local/repository/bin && tmux new-session -A -s shout &&  exec $SHELL'
     ```
 Note: `tmux` allows multiple remote sessions to remain active even when the SSH connection gets disconncted.
-4. 
+
+### Setting up Nodes for Experiment
+For this part, `node` refers to all sessions except the two orchestrator sessions.
+
+1. Download [filetransfer.sh](https://github.com/cjeng8771/offset_estimation/blob/main/filetransfer.sh) and open as a text file. Update the list of HOSTS in the first line using the `SSH command` column in `List View`. Update the IQ file name in the `scp` line as well.
+2. Use the [filetransfer.sh](https://github.com/cjeng8771/offset_estimation/blob/main/filetransfer.sh) script to scp the IQ file to all nodes by running the following command in the terminal/command prompt. The file will show up in the ~ directory on the nodes.
+    ```
+    ./filetransfer.sh
+    ```
+3. Use the following command to move the IQ file to the path where it is specified in the JSON file on every node's session. This eliminates what needs to be edited in the JSON file on each node. `iq_file_name` refers to the name of the IQ file being used.
+    ```
+    mv ~/<iq_file_name> /local/repository/shout/signal_library/<iq_file_name>
+    ```
+4. Set `useexternalclock = True` in `meascli.py` on each node by running the following command and changing the line shown [here](https://gitlab.flux.utah.edu/frost/shout/-/blob/master/meascli.py#L49). This will enable the use of external clock white rabbit in all nodes.
+    ```
+    vim /local/repository/shout/meascli.py
+    ```
+5. On each node, check that the CMD in line 16 is `save_iq_w_tx_file`.
+    ```
+    vim ./3.run_cmd.sh
+    ```
+6. For each node, make the following changes to the JSON file. The JSON file can be accessed using the following command.
+    ```
+    vim /local/repository/etc/cmdfiles/save_iq_w_tx_file.json
+    ```
+    * `txsamps` should contain the path to the IQ file: `/local/repository/shout/signal_library/<iq_file_name>`.
+    * `txrate`, `rxrate`, `txgain`, `rxgain`, `txfreq`, `rxfreq`, and `rxrepeat` can be changed if desired but their default should work for the experiment. `txfreq` and `rxfreq` should be inside the reserved range for the experiment and might need to be changed if the frequency range is different.
+    * `txclients` and `rxclients` should be correct if the nodes in the provided parameter set are used. If not, these lists should be updated to contain the full name of all the reserved nodes for the experiment. The two lists should match.
+7. Confirm connection on the nodes by running `uhd_usrp_probe` on each node. If a node complains about a firmware mismatch, run `./setup_x310.sh` on that node and then run another Power Cycle on the POWDER `List View` before trying to run `uhd_usrp_probe` again.
+
+### Running the Experiment for Data Collection
+1. In one of the orchestrator sessions, run `./1.start_orch.sh`.
+2. In each of the clients/nodes (non-orchestrators), run the following commands to resize the buffer and start the clients.
+    ```
+    sudo sysctl -w net.core.wmem_max=24862979
+    ./2.start_client.sh
+    ```
+3. In the second orchestrator session, run `./3.run_cmd.sh` to initiate the data collection. There should be collected power information printing in the second orchestrator session during collection.
+
+### Confirming and Transferring the Measurements
+1. When the second orchestrator session returns to the command prompt, run `ls /local/data/` and check that a folder exists, entitled `Shout_meas_MM-DD-YYYY_HH-MM-SS` where MM-DD-YYYY is the date of collection and HH-MM-SS is the time of collection. The folder should have three files: `log`, `measurements.hdf5`, and `save_iq_w_tx_file.json`.
+2. Run the following command, on the local computer terminal/command prompt to transfer the data folder to the local host. `Shout_meas_datestr_timestr` should be changed to the name of the data folder on the orchestrator and `local_dir` should be changed to the desired location on the local host.
+    ```
+    scp -r <username>@<orch_node_hostname>:/local/data/Shout_meas_datestr_timestr /<local_dir>
+    ```
+3. Check the local host location to ensure the new data folder transfer was successful.
 
 ## Offset Estimation
 The local [Jupyter Notebook](https://github.com/cjeng8771/offset_estimation/blob/main/offset_estimation_full.ipynb) or the [Google Colab]() will be used for Distributed Clock Time Offset Estimation. 

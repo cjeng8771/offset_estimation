@@ -83,12 +83,12 @@ For this part, `node` refers to all sessions except the two orchestrator session
 3. Check the local host location to ensure the new data folder transfer was successful.
 
 ## Offset Estimation
-The local [Jupyter Notebook](https://github.com/cjeng8771/offset_estimation/blob/main/offset_estimation_full.ipynb) or the [Google Colab]() will be used for Distributed Clock Time Offset Estimation. 
+The local [Jupyter Notebook](https://github.com/cjeng8771/offset_estimation/blob/main/offset_estimation_full.ipynb) or the [Google Colab](https://colab.research.google.com/drive/1bkSyKZGTB1B9pD7VgXEPivuDBxjmpxRi?usp=sharing) will be used for Distributed Clock Time Offset Estimation. 
 
 ### Setting up the Estimation Notebook
 Choose either the local Jupyter Notebook or a copy of the Google Colab to conduct the estimation analysis.
   * Using the Jupyter Notebook will require forking the [repository](https://github.com/cjeng8771/offset_estimation/tree/main) or downloading all files locally. Ensure that the subfolder with collected data files is inside the same folder as the Jupyter Notebook.
-  * Using the Google Colab will require making a copy since the linked notebook is read only. Ensure that the subfolder with collected data files is uploaded to the Colab Notebook.
+  * Using the Google Colab will require making a copy since the [linked notebook](https://colab.research.google.com/drive/1bkSyKZGTB1B9pD7VgXEPivuDBxjmpxRi?usp=sharing) is read only. Ensure that the subfolder with collected data files is uploaded to the Colab Notebook. Instructions for uploading files and setting up the Google Colab environment are included in the Colab Notebook.
   * The data subfolder should, by default, have a name in this format: `Shout_meas_MM-DD-YYYY_HH-MM-SS` where MM-DD-YYYY is the date of collection and HH-MM-SS is the time of collection and contain the following files: `log`, `measurements.hdf5`, and `save_iq_w_tx_file.json`.
 
 ### Estimation Analysis

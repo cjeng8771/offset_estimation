@@ -54,9 +54,9 @@ For this part, `node` refers to all sessions except the two orchestrator session
     ```
 5. On each node, check that the CMD in line 16 is `save_iq_w_tx_file`.
     ```
-    vim ./3.run_cmd.sh
+    vim 3.run_cmd.sh
     ```
-6. For each node, make the following changes to the JSON file. The JSON file can be accessed using the following command.
+6. For each node and the orchestrator, make the following changes to the JSON file. The JSON file can be accessed using the following command.
     ```
     vim /local/repository/etc/cmdfiles/save_iq_w_tx_file.json
     ```

@@ -1,5 +1,5 @@
 
-for HOST in jengc@pc05-fort.emulab.net jengc@pc13-fort.emulab.net jengc@pc09-fort.emulab.net jengc@pc01-meb.emulab.net jengc@pc15-fort.emulab.net jengc@pc08-fort.emulab.net jengc@pc14-fort.emulab.net
+for HOST in jengc@pc13-fort.emulab.net jengc@pc15-fort.emulab.net jengc@pc05-fort.emulab.net jengc@pc09-fort.emulab.net jengc@pc12-fort.emulab.net jengc@pc10-fort.emulab.net jengc@pc11-fort.emulab.net
 do
-    scp QPSK_signal_6-5-23.iq $HOST:
+    scp QPSK_signal_6-8-23_3.iq $HOST:
 done

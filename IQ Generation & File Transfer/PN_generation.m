@@ -1,4 +1,9 @@
-%% Generating Pseudonoise Bit Sequences
+%% Generating Pseudonoise (PN) Bit Sequences
+
+% This script uses a chosen number of stages, code length, starting state,
+% and taps to create two PN codes, one in-phase and one quadrature. The 
+% script is based on a reference function from lecture notes by Dr. Neal 
+% Patwari (Washington University in St. Louis).
 
 %% In Phase
 

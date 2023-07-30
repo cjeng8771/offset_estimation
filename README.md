@@ -1,14 +1,21 @@
-# offset_estimation
+# WATCH: A Distributed Clock Time Offset Estimation Tool on POWDER
 
-## Hands-on Session: Distributed Clock Time Offset Estimation on POWDER
+## Hands-on Session: WATCH
 [Platform for Open Wireless Data-drive Experimental Research (POWDER)](https://powderwireless.net/)
 
 ## Measurement Collection via SHOUT
-The SHOUT measurement framework is used to automate TX and RX functions across multiple nodes in the POWDER network. The data collected will be analyzed in the offset estimation tool outlined below.
+The SHOUT measurement framework is used to automate TX and RX functions across multiple nodes in the POWDER network. The data collected will be analyzed in WATCH, the distributed clock time offset estimation tool outlined below.
 
 ### Create IQ File for Message to Transmit
-1. Open (or make a copy and open) of the IQ generation script  [IQ_generation.ipynb](https://github.com/cjeng8771/offset_estimation/blob/main/IQ_generation.ipynb).
+To transmit a packet with a plain text message and preamble:
+1. Open (or make a copy and open) the IQ generation script  [IQ_generation.ipynb](https://github.com/cjeng8771/offset_estimation/blob/main/IQ%20Generation%20%26%20File%20Transfer/IQ_generation.ipynb).
 2. In the first function in the file, `Information_Transmit`, change the string `Info_to_TX` to hold the desired message to transmit. For the purpose of this experiment, ensure the message is 94 characters, including spaces, just like the original message.
+3. In the 11th cell, the `write_complex_binary` function is defined. If desired, customize the specified name string for the new IQ file in the function call immediately below the function definition. If it is changed, change it in the last cell, as well.
+4. Click the ►► symbol to restart the kernel and run all cells. Confirm that a new .iq file, with the specified name, appears in the folder with the Jupyter Notebook.
+
+To transmit a packet with PN codes and no preamble:
+1. Open (or make a copy and open) the MATLAB PN code generation script [PN_generation.m](https://github.com/cjeng8771/offset_estimation/blob/main/IQ%20Generation%20%26%20File%20Transfer/PN_generation.m). If necessary, adjust the parameters for the in-phase and quadrature sequences and then run the script to display the PN codes.
+2. Open (or make a copy and open) the PN IQ generation script [IQ_generation_PN.ipynb](https://github.com/cjeng8771/offset_estimation/blob/main/IQ%20Generation%20%26%20File%20Transfer/IQ_generation_PN.ipynb). Copy the in-phase and quadrature codes from step 1 into the associated arrays in the `Information_Transmit` function at the top of the script.
 3. In the 11th cell, the `write_complex_binary` function is defined. If desired, customize the specified name string for the new IQ file in the function call immediately below the function definition. If it is changed, change it in the last cell, as well.
 4. Click the ►► symbol to restart the kernel and run all cells. Confirm that a new .iq file, with the specified name, appears in the folder with the Jupyter Notebook.
 
@@ -39,8 +46,8 @@ Note: `tmux` allows multiple remote sessions to remain active even when the SSH 
 ### Setting up Nodes for Experiment
 For this part, `node` refers to all sessions except the two orchestrator sessions.
 
-1. Download [filetransfer.sh](https://github.com/cjeng8771/offset_estimation/blob/main/filetransfer.sh) and open as a text file. Update the list of HOSTS in the first line using the `SSH command` column in `List View`. Update the IQ file name in the `scp` line as well.
-2. Use the [filetransfer.sh](https://github.com/cjeng8771/offset_estimation/blob/main/filetransfer.sh) script to scp the IQ file to all nodes by running the following command in the terminal/command prompt. The file will show up in the ~ directory on the nodes.
+1. Download [filetransfer.sh](https://github.com/cjeng8771/offset_estimation/blob/main/IQ%20Generation%20%26%20File%20Transfer/filetransfer.sh) and open as a text file. Update the list of HOSTS in the first line using the `SSH command` column in `List View`. Update the IQ file name in the `scp` line as well.
+2. Use the [filetransfer.sh](https://github.com/cjeng8771/offset_estimation/blob/main/IQ%20Generation%20%26%20File%20Transfer/filetransfer.sh) script to scp the IQ file to all nodes by running the following command in the terminal/command prompt. The file will show up in the ~ directory on the nodes.
     ```
     ./filetransfer.sh
     ```
@@ -82,23 +89,25 @@ For this part, `node` refers to all sessions except the two orchestrator session
     ```
 3. Check the local host location to ensure the new data folder transfer was successful.
 
-## Offset Estimation
-The local [Jupyter Notebook](https://github.com/cjeng8771/offset_estimation/blob/main/offset_estimation_full.ipynb) or the [Google Colab](https://colab.research.google.com/drive/1bkSyKZGTB1B9pD7VgXEPivuDBxjmpxRi?usp=sharing) will be used for Distributed Clock Time Offset Estimation. 
+## Offset Estimation with WATCH
+The local [Jupyter Notebook](https://github.com/cjeng8771/offset_estimation/blob/main/offset_estimation_jup.ipynb) or the [Google Colab](https://colab.research.google.com/drive/1bkSyKZGTB1B9pD7VgXEPivuDBxjmpxRi?usp=sharing) will be used for distributed clock time offset estimation using preamble cross-correlation with WATCH.
 
-### Setting up the Estimation Notebook
+If you prefer to use WATCH with the full-packet cross correlation method, please use either this local [Jupyter Notebook](https://github.com/cjeng8771/offset_estimation/blob/main/offset_estimation_jup_packet.ipynb) or this [Google Colab](https://colab.research.google.com/drive/1sRhMiZH8nQMn_-oQTBLeMdfvN6Kdn2VK?usp=sharing)
+
+### Setting up WATCH
 Choose either the local Jupyter Notebook or a copy of the Google Colab to conduct the estimation analysis.
   * Using the Jupyter Notebook will require forking the [repository](https://github.com/cjeng8771/offset_estimation/tree/main) or downloading all files locally. Ensure that the subfolder with collected data files is inside the same folder as the Jupyter Notebook.
-  * Using the Google Colab will require making a copy since the [linked notebook](https://colab.research.google.com/drive/1bkSyKZGTB1B9pD7VgXEPivuDBxjmpxRi?usp=sharing) is read only. Ensure that the subfolder with collected data files is uploaded to the Colab Notebook. Instructions for uploading files and setting up the Google Colab environment are included in the Colab Notebook.
+  * Using the Google Colab will require making a copy since the above lined notebooks are read only. Ensure that the subfolder with collected data files is uploaded to the Colab Notebook. Instructions for uploading files and setting up the Google Colab environment are included in the Colab Notebooks.
   * The data subfolder should, by default, have a name in this format: `Shout_meas_MM-DD-YYYY_HH-MM-SS` where MM-DD-YYYY is the date of collection and HH-MM-SS is the time of collection and contain the following files: `log`, `measurements.hdf5`, and `save_iq_w_tx_file.json`.
 
 ### Estimation Analysis
-The offset estimation notebooks uses the SHOUT data to:
+The WATCH notebooks use the SHOUT data to:
   * Plot the Power spectral density (PSD) for each link in the data set.
-  * Calculate the index offset from the beginning of the received packet to the index of highest correlation with the preamble (true beginning of transmitted packet) for each link.
+  * Calculate the index offset from the beginning of the received packet to the index of highest correlation with the preamble, in the preamble method, or the whole transmitted packet, in the full-packet method, for each link.
   * Calculate each link's signal to noise ratio (SNR).
   * Use the offset values to estimate the distributed clock time offset at each SHOUT receiver used in the experiment.
   * Analyze the least square error and root mean squared error (RMSE) for each link's estimation in comparison to the true calculated offsets.
 
-### Additional Notes to Understand the Offset Estimation Results
+### Additional Notes to Understand WATCH Results
 1. Because SHOUT collects TX/RX data from each link four times, there are four repetitions/trials (referred to as `repNum` in the code) for each link to provide more context for the estimation and inference.
-2. Running the Jupyter Notebook will create 8 files in its parent folder. Four files entitled `col_#.txt` and four files entitled `snr_#.txt`. These files hold the offset data and SNR data for each link, respectively, with the files numbered by `repNum`.
+2. Running the Jupyter Notebooks will create 8 files in the parent folder. Four files entitled `col_#.txt` and four files entitled `snr_#.txt`. These files hold the offset data and SNR data for each link, respectively, with the files numbered by `repNum`.
